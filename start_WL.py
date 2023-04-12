@@ -47,7 +47,7 @@ if __name__ == '__main__':
     print("Done !")
 
     class_weights = [len(new_train_labels) / np.sum(new_train_labels == 1), len(new_train_labels) / np.sum(new_train_labels == -1)]
-    model = SVM(C, k.kernel)
+    model = SVM(C, kernel.kernel)
     print("Fitting the model")
     model.fit(train_graphs, new_train_labels, K_train, class_weights)
     print("Model fitted")
@@ -59,4 +59,4 @@ if __name__ == '__main__':
     dataframe.index += 1
     path = "pred_h" + str(h) + "_C" + str(C) + ".csv"
     dataframe.to_csv(path,index_label='Id')
-    print("Prediction done and results saved as" + path)
+    print("Prediction done and results saved as " + path)
