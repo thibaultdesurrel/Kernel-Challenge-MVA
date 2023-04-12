@@ -46,8 +46,6 @@ if __name__ == '__main__':
     K_train = kernel.kernel(train_graphs,train_graphs)
     print("Done !")
 
-    X = np.array(train_set)
-    y = train_labels_set
     class_weights = [len(new_train_labels) / np.sum(new_train_labels == 1), len(new_train_labels) / np.sum(new_train_labels == -1)]
     model = SVM(C, k.kernel)
     print("Fitting the model")
