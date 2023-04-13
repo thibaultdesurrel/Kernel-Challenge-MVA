@@ -2,6 +2,7 @@ import numpy as np
 import cvxopt
 from cvxopt import matrix
 
+
 class SVM:
     def __init__(self, C, kernel, thresh=1e-3):
         """
@@ -37,23 +38,32 @@ class SVM:
         # We start by defining the different quantities we need in order to solve our problem
 
         P = matrix(K)
-        q = matrix(-y.astype('float'))
-        G = matrix(np.block([[np.diag(np.squeeze(y).astype('float'))],[-np.diag(np.squeeze(y).astype('float'))]]))
-        h = np.concatenate((self.C*np.ones(nb_samples),np.zeros(nb_samples)))
-        h[:nb_samples] *= ((y == 1)*class_weights[0] + (y == -1)*class_weights[1])
+        q = matrix(-y.astype("float"))
+        G = matrix(
+            np.block(
+                [
+                    [np.diag(np.squeeze(y).astype("float"))],
+                    [-np.diag(np.squeeze(y).astype("float"))],
+                ]
+            )
+        )
+        h = np.concatenate((self.C * np.ones(nb_samples), np.zeros(nb_samples)))
+        h[:nb_samples] *= (y == 1) * class_weights[0] + (y == -1) * class_weights[1]
         h = matrix(h)
 
-        #Solve the problem using cvxopt
-        solver = cvxopt.solvers.qp(P=P,q=q,G=G,h=h)
-        solution = solver['x']
+        # Solve the problem using cvxopt
+        solver = cvxopt.solvers.qp(P=P, q=q, G=G, h=h)
+        solution = solver["x"]
         self.alpha = np.squeeze(np.array(solution))
 
-        #Retrieve the support vectors
-        self.support_vectors_indices = np.squeeze(np.abs(np.array(solution))) > self.threshold
+        # Retrieve the support vectors
+        self.support_vectors_indices = (
+            np.squeeze(np.abs(np.array(solution))) > self.threshold
+        )
         self.alpha = self.alpha[self.support_vectors_indices]
         self.support_vectors = self.X[self.support_vectors_indices]
 
-    def predict_logit(self,X):
+    def predict_logit(self, X):
         """
         Parameters :
         X : array of data for which we want to predict the label (nb_samples x nb_features)
@@ -61,8 +71,8 @@ class SVM:
         Returns :
         Array of the predicted logits (n_samples)
         """
-        K = self.kernel(X,self.support_vectors)
-        return K@self.alpha
+        K = self.kernel(X, self.support_vectors)
+        return K @ self.alpha
 
     def predict_class(self, X):
         """
