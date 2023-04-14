@@ -4,38 +4,6 @@ from tqdm import tqdm
 from multiprocessing import Pool
 
 
-# def weisfeiler_lehman(G, h):
-#     """
-#     Computes the Weisfeiler-Lehman (WL) graph for the given graph G
-#     with h iterations.
-#     """
-#     # Create a dictionary of node labels
-#     labels = nx.get_node_attributes(G, 'labels')
-#     #for i in labels:
-#     #    labels[i] = str(labels[i][0])
-#     for i in range(h):
-#         # Create a dictionary of new labels
-#         new_labels = {}
-#         for node in G.nodes():
-#             # Get the node's neighbors and their labels
-#             neighbors = G.neighbors(node)
-#             neighbor_labels = [labels[n] for n in neighbors]
-#             # Sort the neighbor labels and concatenate them
-#             neighbor_labels.sort()
-#             neighbor_labels = '_'.join(list(map(str, neighbor_labels)))
-#             # Compute the new label for the node
-#             new_labels[node] = str(labels[node][0]) + '_' + neighbor_labels
-#         # Update the node labels
-#         labels = new_labels
-#     # Create a new graph with the new node labels
-#     H = nx.Graph()
-#     for node, label in labels.items():
-#         H.add_node(node, labels = label)
-#     for u, v in G.edges():
-#         H.add_edge(u, v)
-#     return H
-
-
 def weisfeiler_lehman(G, h):
     """
     Computes the Weisfeiler-Lehman (WL) graph for the given graph G
